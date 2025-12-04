@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeterHub - API Testing Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.5);
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --border: #334155;
+            --card-bg: rgba(30, 41, 59, 0.7);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: var(--text-primary);
+        }
+
+        /* Hero */
+        .hero {
+            padding: 8rem 0 4rem;
+            text-align: center;
+            background: radial-gradient(circle at top center, rgba(59, 130, 246, 0.15), transparent 40%);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            background: linear-gradient(to right, #f8fafc, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px var(--accent-glow);
+        }
+
+        /* Screenshots */
+        .screenshot-container {
+            margin: 4rem 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            position: relative;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .screenshot-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        }
+
+        .screenshot-img {
+            width: 100%;
+            display: block;
+            line-height: 0;
+        }
+
+        .screenshot-img img {
+            width: 100%;
+            height: auto;
+            max-height: 600px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .screenshot-placeholder {
+            width: 100%;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .screenshot-placeholder img {
+            width: 100%;
+            height: auto;
+            max-height: 600px;
+            object-fit: contain;
+            display: block;
+        }
+
+        /* Features */
+        .section {
+            padding: 5rem 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-bottom: 6rem;
+        }
+
+        .feature-row.reverse {
+            direction: rtl;
+        }
+
+        .feature-row.reverse>* {
+            direction: ltr;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            border-radius: 12px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            padding: 0.75rem;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 12px;
+            color: var(--accent);
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: #000;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            position: relative;
+            margin: 1.5rem 0;
+        }
+
+        .code-block code {
+            color: #e2e8f0;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--bg-tertiary);
+            border: none;
+            color: var(--text-secondary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+        }
+
+        /* Variable Types */
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        .badge-global {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+        }
+
+        .badge-env {
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+        }
+
+        .badge-vault {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fbbf24;
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-secondary);
+            background: var(--bg-primary);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate {
+            animation: fadeIn 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        .delay-1 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.3s;
+        }
+
+        /* Syntax Highlighting */
+        .token-key {
+            color: #60a5fa;
+        }
+
+        .token-string {
+            color: #34d399;
+        }
+
+        .token-number {
+            color: #f472b6;
+        }
+
+        .token-comment {
+            color: #64748b;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .feature-row {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .feature-row.reverse {
+                direction: ltr;
+            }
+
+            .screenshot-img img,
+            .screenshot-placeholder img {
+                max-height: 500px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            nav a {
+                font-size: 0.85rem;
+            }
+
+            .screenshot-container {
+                margin: 2rem 0;
+            }
+
+            .screenshot-img img,
+            .screenshot-placeholder img {
+                max-height: 400px;
+            }
+
+            .feature-row {
+                margin-bottom: 3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 6rem 0 3rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section {
+                padding: 3rem 0;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+                margin-bottom: 2rem;
+            }
+
+            .screenshot-img img,
+            .screenshot-placeholder img {
+                max-height: 300px;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            .logo {
+                font-size: 1.25rem;
+            }
+
+            .btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Lightbox Modal */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox-content {
+            max-width: 95%;
+            max-height: 95%;
+            position: relative;
+            animation: zoomIn 0.3s ease;
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 95vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 25px 100px rgba(0, 0, 0, 0.8);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            backdrop-filter: blur(10px);
+        }
+
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .screenshot-img img,
+        .screenshot-placeholder img {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .screenshot-img img:hover,
+        .screenshot-placeholder img:hover {
+            transform: scale(1.02);
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container nav-content">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                </svg>
+                MeterHub
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#overview">Overview</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#auth">Authentication</a></li>
+                    <li><a href="#docs">Docs</a></li>
+                </ul>
+            </nav>
+            <a href="http://localhost:3000" class="btn btn-primary">Launch App</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero -->
+        <section class="hero container" id="overview">
+            <h1 class="animate">API Testing Reimagined<br>for Modern Developers</h1>
+            <p class="animate delay-1">Streamline your workflow with a powerful, beautiful, and intuitive API testing
+                platform. Built for speed, designed for collaboration.</p>
+            <div class="animate delay-2">
+                <a href="#getting-started" class="btn btn-primary">Get Started</a>
+            </div>
+
+            <div class="screenshot-container animate delay-3">
+                <div class="screenshot-placeholder">
+                    <!-- Add screenshot: assets/workspace.png -->
+                    <img src="assets/main_screen.png" alt="">
+                </div>
+            </div>
+        </section>
+
+        <!-- Core Features Grid -->
+        <section id="features" class="section">
+            <div class="container">
+                <h2 class="section-title">Everything You Need</h2>
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-icon">⚡</div>
+                        <h3>Lightning Fast</h3>
+                        <p>Built with Next.js and NestJS for instant response times and smooth interactions.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🌍</div>
+                        <h3>Environment Manager</h3>
+                        <p>Switch between Dev, Staging, and Prod environments with a single click.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🔐</div>
+                        <h3>Secure Vault</h3>
+                        <p>Keep sensitive tokens and keys safe with our encrypted vault storage.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">👥</div>
+                        <h3>Team Collaboration</h3>
+                        <p>Share collections and collaborate with your team in real-time.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detailed Features -->
+        <section class="section">
+            <div class="container">
+
+                <!-- Login & Signup -->
+                <div class="feature-row">
+                    <div>
+                        <h3>Secure Authentication</h3>
+                        <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">
+                            Create your personal workspace with secure Login and Signup. Sync your collections and
+                            settings across devices.
+                        </p>
+                        <ul style="list-style: none; color: var(--text-secondary);">
+                            <li style="margin-bottom: 0.5rem;">✓ Email & Password Login</li>
+                            <li style="margin-bottom: 0.5rem;">✓ Secure Account Creation</li>
+                            <li>✓ Profile Management</li>
+                        </ul>
+                    </div>
+                    <div class="screenshot-container" style="margin: 0;">
+                        <div class="screenshot-placeholder">
+                            <!-- Add screenshot: assets/login_signup.png -->
+                            <div class="screenshot-img">
+                                <img src="assets/login_screen.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Collections & Requests -->
+                <div class="feature-row reverse">
+                    <div>
+                        <h3>Organized Collections</h3>
+                        <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">
+                            Keep your API requests organized with Collections and Folders. Save, load, and manage your
+                            workflows efficiently.
+                        </p>
+                        <ul style="list-style: none; color: var(--text-secondary);">
+                            <li style="margin-bottom: 0.5rem;">✓ Create & Manage Collections</li>
+                            <li style="margin-bottom: 0.5rem;">✓ Nested Folder Structure</li>
+                            <li>✓ Drag & Drop Organization</li>
+                        </ul>
+                    </div>
+                    <div class="screenshot-container" style="margin: 0;">
+                        <div class="screenshot-placeholder">
+                            <!-- Add screenshot: assets/collections.png -->
+                            <div class="screenshot-img">
+                                <img src="assets/collection_screen.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Request Builder -->
+                <div class="feature-row">
+                    <div>
+                        <h3>Powerful Request Builder</h3>
+                        <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">
+                            Craft complex requests with ease. Full support for Query Params, Headers, and various Body
+                            types.
+                        </p>
+                        <ul style="list-style: none; color: var(--text-secondary);">
+                            <li style="margin-bottom: 0.5rem;">✓ Key-Value Editors for Params & Headers</li>
+                            <li style="margin-bottom: 0.5rem;">✓ JSON, XML, Form-Data Body Support</li>
+                            <li>✓ Syntax Highlighting & Validation</li>
+                        </ul>
+                    </div>
+                    <div class="screenshot-container" style="margin: 0;">
+                        <div class="screenshot-placeholder">
+                            <!-- Add screenshot: assets/request_builder.png -->
+                            <div class="screenshot-img">
+                                <img src="assets/request_screen.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Authentication Types -->
+        <section id="auth" class="section" style="background: var(--bg-secondary);">
+            <div class="container">
+                <h2 class="section-title">Comprehensive Authentication</h2>
+                <p
+                    style="text-align: center; margin-bottom: 3rem; color: var(--text-secondary); max-width: 700px; margin-left: auto; margin-right: auto;">
+                    Support for all major authentication protocols to ensure you can test any API.
+                </p>
+
+                <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                    <div class="card" style="text-align: center;">
+                        <h4>Bearer Token</h4>
+                        <p style="font-size: 0.8rem; margin-top: 0.5rem;">JWT & OAuth Access Tokens</p>
+                    </div>
+                    <div class="card" style="text-align: center;">
+                        <h4>Basic Auth</h4>
+                        <p style="font-size: 0.8rem; margin-top: 0.5rem;">Username & Password</p>
+                    </div>
+                    <div class="card" style="text-align: center;">
+                        <h4>OAuth 2.0</h4>
+                        <p style="font-size: 0.8rem; margin-top: 0.5rem;">Modern Auth Flows</p>
+                    </div>
+                    <div class="card" style="text-align: center;">
+                        <h4>API Key</h4>
+                        <p style="font-size: 0.8rem; margin-top: 0.5rem;">Header or Query Param</p>
+                    </div>
+                    <div class="card" style="text-align: center;">
+                        <h4>AWS Signature</h4>
+                        <p style="font-size: 0.8rem; margin-top: 0.5rem;">AWS v4 Signing</p>
+                    </div>
+                    <div class="card" style="text-align: center;">
+                        <h4>Digest Auth</h4>
+                        <p style="font-size: 0.8rem; margin-top: 0.5rem;">Secure Challenge-Response</p>
+                    </div>
+                </div>
+
+                <div class="screenshot-container" style="margin-top: 3rem;">
+                    <div class="screenshot-placeholder">
+                        <!-- Add screenshot: assets/auth_types.png -->
+                        <div class="screenshot-img">
+                            <img src="assets/authentication_screen.png" alt="">
+                        </div>
+                    </div>
+                </div>
+                <!-- Request History -->
+                <div class="feature-row reverse">
+                    <div>
+                        <h3>Request History</h3>
+                        <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">
+                            Never lose track of your work. Automatically save and restore past requests with a
+                            searchable history.
+                        </p>
+                        <ul style="list-style: none; color: var(--text-secondary);">
+                            <li style="margin-bottom: 0.5rem;">✓ Auto-Save Requests</li>
+                            <li style="margin-bottom: 0.5rem;">✓ Searchable History</li>
+                            <li>✓ One-Click Restore</li>
+                        </ul>
+                    </div>
+                    <div class="screenshot-container" style="margin: 0;">
+                        <div class="screenshot-placeholder">
+                            <!-- Add screenshot: assets/history.png -->
+                            <div class="screenshot-img">
+                                <img src="assets/history_screen.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Variables & Environments -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Environments & Variables</h2>
+
+                <div class="feature-row">
+                    <div>
+                        <h3>Global & Environment Variables</h3>
+                        <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">
+                            Define variables once and use them everywhere. Switch environments to automatically update
+                            values.
+                        </p>
+
+                        <div style="margin-bottom: 2rem;">
+                            <div style="margin-bottom: 1rem;">
+                                <span class="badge badge-global">Global</span>
+                                <span style="font-size: 0.9rem; color: var(--text-secondary);">Available
+                                    everywhere</span>
+                            </div>
+                            <div style="margin-bottom: 1rem;">
+                                <span class="badge badge-env">Environment</span>
+                                <span style="font-size: 0.9rem; color: var(--text-secondary);">Specific to active
+                                    environment</span>
+                            </div>
+                        </div>
+
+                        <div class="code-block">
+                            <code><span class="token-comment">// Use variables in URL</span>
+{{API_URL}}/users/{{USER_ID}}</code>
+                        </div>
+                    </div>
+                    <div class="screenshot-container" style="margin: 0;">
+                        <div class="screenshot-placeholder">
+                            <!-- Add screenshot: assets/variables.png -->
+                            <div class="screenshot-img">
+                                <img src="assets/variableManager_screen.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Documentation & Sharing -->
+        <section id="docs" class="section" style="background: var(--bg-secondary);">
+            <div class="container">
+                <h2 class="section-title">Documentation & Sharing</h2>
+
+                <div class="feature-row reverse">
+                    <div>
+                        <h3>Auto-Generated Documentation</h3>
+                        <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">
+                            Instantly generate beautiful documentation for your collections. Share it with your team or
+                            publish it for your users.
+                        </p>
+                        <ul style="list-style: none; color: var(--text-secondary);">
+                            <li style="margin-bottom: 0.5rem;">✓ One-click Generation</li>
+                            <li style="margin-bottom: 0.5rem;">✓ Shareable Links</li>
+                            <li>✓ Export Collections</li>
+                        </ul>
+                    </div>
+                    <div class="screenshot-container" style="margin: 0;">
+                        <div class="screenshot-placeholder">
+                            <!-- Add screenshot: assets/documentation.png -->
+                            <div class="screenshot-img">
+                                <img src="assets/documentation_screen.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox">
+        <div class="lightbox-close" onclick="closeLightbox()">×</div>
+        <div class="lightbox-content">
+            <img id="lightbox-img" src="" alt="">
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 MeterHub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    entry.target.style.opacity = '1';
+                }
+            });
+        });
+
+        document.querySelectorAll('.animate').forEach(el => {
+            el.style.opacity = '0';
+            observer.observe(el);
+        });
+
+        // Copy code function
+        function copyCode(btn) {
+            const code = btn.nextElementSibling.innerText;
+            navigator.clipboard.writeText(code);
+            const originalText = btn.innerText;
+            btn.innerText = 'Copied!';
+            setTimeout(() => btn.innerText = originalText, 2000);
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Lightbox functionality
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+
+        // Make all screenshot images clickable
+        document.querySelectorAll('.screenshot-img img, .screenshot-placeholder img').forEach(img => {
+            img.addEventListener('click', function () {
+                lightboxImg.src = this.src;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        // Close lightbox function
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close on background click
+        lightbox.addEventListener('click', function (e) {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                closeLightbox();
+            }
+        });
+    </script>
+</body>
+
+</html>
