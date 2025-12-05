@@ -597,6 +597,7 @@
                     <li><a href="#overview">Overview</a></li>
                     <li><a href="#features">Features</a></li>
                     <li><a href="#auth">Authentication</a></li>
+                    <li><a href="#admin">Admin</a></li>
                     <li><a href="#docs">Docs</a></li>
                 </ul>
             </nav>
@@ -869,6 +870,103 @@
                                 <img src="assets/documentation_screen.png" alt="">
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Features -->
+        <section id="admin" class="section">
+            <div class="container">
+                <h2 class="section-title">🔧 Admin Features</h2>
+                <p
+                    style="text-align: center; margin-bottom: 3rem; color: var(--text-secondary); max-width: 700px; margin-left: auto; margin-right: auto;">
+                    Powerful administrative tools for system monitoring and control.
+                </p>
+
+                <!-- Maintenance Mode -->
+                <div class="feature-row">
+                    <div>
+                        <h3>Maintenance Mode</h3>
+                        <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">
+                            Control system-wide maintenance with custom messaging and admin-only access during downtime.
+                        </p>
+                        <ul style="list-style: none; color: var(--text-secondary);">
+                            <li style="margin-bottom: 0.5rem;">✓ System-Wide Toggle</li>
+                            <li style="margin-bottom: 0.5rem;">✓ Custom Maintenance Message</li>
+                            <li style="margin-bottom: 0.5rem;">✓ Admin Access During Maintenance</li>
+                            <li style="margin-bottom: 0.5rem;">✓ Live Preview</li>
+                            <li style="margin-bottom: 0.5rem;">✓ Automatic User Redirection</li>
+                            <li>✓ Toast Notifications</li>
+                        </ul>
+                    </div>
+                    <div class="screenshot-container" style="margin: 0;">
+                        <div class="screenshot-placeholder">
+                            <!-- Add screenshot: assets/maintenance_mode.png -->
+                            <div class="screenshot-img">
+                                <img src="assets/maintenance_mode.png" alt="Maintenance Mode Settings">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Analytics -->
+                <div class="feature-row reverse">
+                    <div>
+                        <h3>User Analytics Dashboard</h3>
+                        <p style="margin-bottom: 1.5rem; color: var(--text-secondary);">
+                            Comprehensive analytics to monitor system usage, user activity, and API request patterns.
+                        </p>
+
+                        <h4 style="margin-bottom: 1rem; color: var(--text-primary); font-size: 1.1rem;">Statistics
+                            Tracked:</h4>
+                        <ul style="list-style: none; color: var(--text-secondary);">
+                            <li style="margin-bottom: 0.5rem;">📊 Total Users</li>
+                            <li style="margin-bottom: 0.5rem;">👥 Daily Active Users (DAU)</li>
+                            <li style="margin-bottom: 0.5rem;">📁 Total Collections Created</li>
+                            <li style="margin-bottom: 0.5rem;">🚀 Requests Sent Today</li>
+                            <li style="margin-bottom: 0.5rem;">📈 HTTP Methods Distribution</li>
+                            <li style="margin-bottom: 0.5rem;">🏆 Top 10 Active Users</li>
+                            <li>⚠️ Error Analytics (4xx & 5xx)</li>
+                        </ul>
+
+                        <div
+                            style="margin-top: 1.5rem; padding: 1rem; background: rgba(59, 130, 246, 0.1); border-radius: 8px; border-left: 3px solid var(--accent);">
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">
+                                <strong style="color: var(--text-primary);">Privacy First:</strong> Only tracks
+                                non-admin user activity and external API requests. Internal MeterHub operations are
+                                excluded.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="screenshot-container" style="margin: 0;">
+                        <div class="screenshot-placeholder">
+                            <!-- Add screenshot: assets/user_analytics.png -->
+                            <div class="screenshot-img">
+                                <img src="assets/user_analytics.png" alt="User Analytics Dashboard">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature Control & Audit Logs -->
+                <div class="grid" style="margin-top: 4rem;">
+                    <div class="card">
+                        <div class="card-icon">⚙️</div>
+                        <h3>Feature Control</h3>
+                        <p>Enable or disable system features globally. Control access to collections, history,
+                            environments, and more.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">📋</div>
+                        <h3>Audit Logs</h3>
+                        <p>Track all admin actions and system events. Maintain a complete audit trail for security and
+                            compliance.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">👤</div>
+                        <h3>User Management</h3>
+                        <p>View and manage user accounts. Update roles, disable accounts, and monitor user activity.</p>
                     </div>
                 </div>
             </div>
